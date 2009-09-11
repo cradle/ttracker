@@ -1,0 +1,40 @@
+<html>
+  <head>
+    <title>T Track</title>
+  </head>
+  <body>
+    <h1>T Track</h1>
+    <h2>Add T Tracker</h2>
+    <form method="post" action="unit">
+      <label for="name">Name</label>
+      <input type='text' name='name' value='weight'></input>
+      <label for="unit">Unit</label>
+      <input type='text' name='unit' value='kg'></input>
+      <input type="submit" value="Add">
+    </form>
+    {% for unit in units %}
+    <ul>
+      <li><option value="{{ unit.key }}">{{ unit.name }} ({{ unit.unit }})</li>
+    </ul>
+    {% endfor %}
+    <h2>Add T Tracker Entry</h2>
+    <form method="post" action="entry">
+      <label for="value">Value</label>
+      <input type='text' name='value'></input>
+      <label for="unit">Units</label>
+      <select name="unit">
+        {% for unit in units %}
+        <option value="{{ unit.key }}">{{ unit.name }} ({{ unit.unit }})</option>
+        {% endfor %}
+      </select>
+      <input type="submit" value="Add">
+    </form>
+    <dl> {% for entry in entries %}
+      {% ifchanged %}<dt>{{ entry.date|date:"d M" }}</dt>{% endifchanged %}
+      <dd>
+        {{entry.unit.name|escape}}: {{ entry.value|escape }}{{ entry.unit.unit|escape }}
+        {% ifchanged entry.date.hour %}<small>{{ entry.date|date:"gA T" }}</small> {% endifchanged %}
+      </dd>
+    {% endfor %} </dl>
+  </body>
+</html>
